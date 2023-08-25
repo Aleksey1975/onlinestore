@@ -1,0 +1,45 @@
+{% extends 'store/default.html' %}
+{% load custom_filters %}
+{% load custom_tags %}
+{% block title %}Продукты{% endblock title %}
+
+{% block content %}
+   <h1>Все товары</h1>
+
+   <form action="" method="get">
+       {{ filterset.form.as_p }}
+       <input type="submit" value="Найти" />
+   </form>
+
+   <hr>
+   {% if products %}
+{% include 'simpleapp/includes/paginator.html' %}
+       <table>
+           <tr>
+               <td>Название</td>
+               <td>Описание</td>
+               <td>Категория</td>
+               <td>Цена</td>
+               <td>Количество</td>
+           </tr>
+
+           {% for product in products %}
+           <tr>
+               <td><a href="{% url 'product_detail' product.pk %}">{{ product.name }}</a></td>
+               <td>{{ product.description|truncatechars:15 }}</td>
+               <td>{{ product.category.name }}</td>
+               <td>{{ product.price|currency }}</td>
+               <td>{{ product.quantity }}</td>
+           </tr>
+           {% endfor %}
+
+       </table>
+
+{% include 'simpleapp/includes/paginator.html' %}
+
+   {% else %}
+       <h2>Товаров нет!</h2>
+   {% endif %}
+
+
+{% endblock content %}
